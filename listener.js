@@ -14,6 +14,7 @@ var app = express();
 app.use(bodyParser.json());
 var db = new database.DataBase("census.json");
 
+
 app.post("/checkCensus", (req, res) => {
 	//Check census
 	if(db.isInCensus(util.sha256(req.body.dni))){
@@ -30,13 +31,13 @@ app.post("/checkTransInBlocks", (req, res) => {
 		if(block.includedTransaction(req.body))	{
 			ret="Error";
 		}
-	}
+	});
 	res.send(ret);
 });
 
 app.post("/waitConsensus", (req, res) => {
 	//Wait for consensus in block history
-	if(/*not consensus*/){
+	if(false/*not consensus*/){
 		res.send("Error");
 	} else {
 		res.send("Success");
@@ -45,16 +46,18 @@ app.post("/waitConsensus", (req, res) => {
 
 app.post("/getTrans", (req, res) => {
 	//Receive transaction from peers
-	if(/*wrong signature*/){
+	//Check signature
+	if(!req.body.trans.verify()){
 		res.send("Error");
 	} else {
 		pendingTrans.push(req.body.trans);
+		res.send("Success");
 	}
 });
 
 app.post("/getBlock", (req, res) => {
 	//Receive block from peers
-	if(/*wrong hash signature*/){
+	if(false/*wrong hash signature*/){
 		res.send("Error");
 	} else {
 		blockchain.push(req.body.block);
