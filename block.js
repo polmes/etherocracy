@@ -13,3 +13,5 @@ class Block {
 		
 	}
 };
+
+module.exports.block = Block;

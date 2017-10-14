@@ -1,13 +1,22 @@
-var bodyParser = require("body-parser");
-var crypto = require("crypto");
-require("block.js");
-function sha256(str){
-	return crypto.createHash("sha256").update(str).digest("hex");
-}
+// Modules
+var bodyParser = require('body-parser');
+var crypto = require('crypto');
+var block = require('block');
+var util = require('util');
+var express = require('express');
+var database = require('database');
+
+// Init
+var blockchain = [];
+var nodeList = [];
+var pendingTrans = [];
+var app = express();
+app.use(bodyParser.json());
+var db = new database.DataBase("census.json");
 
 app.post("/checkCensus", (req, res) => {
 	//Check census
-	if(db.isInCensus(sha256(req.body.dni))){
+	if(db.isInCensus(util.sha256(req.body.dni))){
 		res.send("Error");
 	} else {
 		res.send("Success");
