@@ -1,0 +1,2 @@
+# etherocracy
+Democratizing polling stations
