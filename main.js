@@ -67,4 +67,4 @@ app.post("/getBlock", (req, res) => {
 	}
 });
 
-app.listen(http_port, () => console.log("Listening http on port: " + http_port));
+app.listen(http_port, () => console.log("Listening http on port: " + http_port)); // add '0.0.0.0' if necessary

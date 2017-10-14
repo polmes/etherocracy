@@ -10,12 +10,12 @@ var sendBlock = function(ip, port, block) {
 	});
 };
 
-var sendTrans = function(ip, port, transaction) {
+var sendTrans = function(ip, port, trans) {
 	request({
 		uri: "http://" + ip + ":" + port + "/getTrans",
 		method: "POST",
 		form: {
-			transaction: transaction
+			trans: trans
 		}
 	});
 };
