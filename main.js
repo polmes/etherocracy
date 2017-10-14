@@ -1,7 +1,8 @@
 // Modules
 var bodyParser = require('body-parser');
 var express = require('express');
-var block = require('./block');
+var Transaction = require('./transaction');
+var Block = require('./block');
 var util = require('./util');
 var DataBase = require('./database');
 
