@@ -22,8 +22,8 @@ class Block {
 	    return sha256(index + previousHash + timestamp + data);
 	}
 	includedTransaction(trans){
-		return this.data.indexOf(trans)<0:false?true;
+		return this.data.indexOf(trans)<0 ? false : true;
 	}
-};
+}
 
 module.exports.block = Block;
