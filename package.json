@@ -1,0 +1,23 @@
+{
+  "name": "etherocracy",
+  "version": "1.0.0",
+  "description": "Democratizing polling stations",
+  "main": "listener.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polmes/etherocracy.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/polmes/etherocracy/issues"
+  },
+  "homepage": "https://github.com/polmes/etherocracy#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}

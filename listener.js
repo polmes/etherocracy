@@ -1,23 +1,25 @@
 // Modules
 var bodyParser = require('body-parser');
-var crypto = require('crypto');
-var block = require('block');
-var util = require('util');
 var express = require('express');
-var database = require('database');
+var block = require('./block');
+var util = require('./util');
+var DataBase = require('./database');
 
 // Init
 var blockchain = [];
 var nodeList = [];
 var pendingTrans = [];
 var app = express();
-app.use(bodyParser.json());
-var db = new database.DataBase("census.json");
+var db = new DataBase("census.json");
 
+// Config
+var http_port = 31416;
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.post("/checkCensus", (req, res) => {
 	//Check census
-	if(db.isInCensus(util.sha256(req.body.dni))){
+	if(!db.isInCensus(util.sha256(req.body.dni))){
 		res.send("Error");
 	} else {
 		res.send("Success");
