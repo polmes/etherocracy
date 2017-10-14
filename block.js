@@ -1,16 +1,28 @@
+class Transaction {
+	constructor(DNIhash,sig,pubkey,privkey){
+		this.DNIhash=DNIhash;
+		this.sig=sign(privkey);
+		this.pubkey=pubkey;
+	}
+	sign(privkey){
+		let s = crypto.createSign("sha256");
+		s.update(this.DNIhash);
+		return s.sign(privkey, "hex");
+	}
+}
+
 class Block {
-	constructor(index, previousHash, timestamp, data, hash) {
+	constructor(index, previousHash, timestamp, data) {
 		this.index = index;
 		this.previousHash = previousHash.toString();
-		this.timestamp = timestamp;
 		this.data = data;
-		this.hash = hash.toString();
+		this.hash = calculateHash();
 	}
 	calculateHash () {
-	    this.hash=sha256(index + previousHash + timestamp + data);
+	    return sha256(index + previousHash + timestamp + data);
 	}
-	serialize(){
-		
+	includedTransaction(trans){
+		return this.data.indexOf(trans)<0:false?true;
 	}
 };
 
