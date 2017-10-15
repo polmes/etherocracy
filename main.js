@@ -102,17 +102,17 @@ app.post("/getTrans", (req, res) => {
 
 	//Check pubkey
 	console.log(pubkeys);
-	if (pubkeys.indexOf(req.body.trans.pubkey) < 0 ) {
+	if (pubkeys.indexOf(trans.pubkey) < 0 ) {
 		return res.send("Error");
 	}
 
 	//Check signature
-	if(!req.body.trans.verify()){
+	if(!trans.verify()){
 		console.log("non verified");
 		return res.send("Error");
 	} else {
 		console.log("add to pending");
-		pendingTrans.push(req.body.trans);
+		pendingTrans.push(trans);
 		return res.send("Success");
 	}
 });
