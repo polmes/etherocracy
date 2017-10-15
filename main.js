@@ -1,11 +1,13 @@
 // Modules
 var bodyParser = require('body-parser');
 var express = require('express');
+var fs = require('fs');
 var Transaction = require('./transaction');
 var Block = require('./block');
 var util = require('./util');
 var DataBase = require('./database');
 var generate = require('./generate');
+
 
 // Init
 var blockchain = [new Block(0,0,0,"123987456")];
@@ -21,8 +23,8 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 // Polling station
-var pubkey = "";
-var privkey = "";
+var pubkey = fs.readFileSync('testkey.pub', 'utf8');
+var privkey = fs.readFileSync('testkey', 'utf8');
 
 app.get("/", (req, res) => {
 	res.sendFile(__dirname+"/index.html");
@@ -35,9 +37,9 @@ app.post("/check", (req, res) => {
 	let hash = util.sha256(req.body.dni);
 
 	//Check census
-	if(!db.isInCensus(hash)){
+	if (!db.isInCensus(hash)) {
 		ans.census = "error";
-		res.send(ans);
+		return res.send(ans);
 	}
 	ans.census = "success";
 
@@ -45,16 +47,16 @@ app.post("/check", (req, res) => {
 	blockchain.forEach( (block) => {
 		if(block.includedTransaction(req.body))	{
 			ans.block = "error";
-			res.send(ans);
+			return res.send(ans);
 		}
 	});
 	ans.block = "success";
 
 	// Generate and send transaction
-	generate.genTransaction(hash, pubkey, privkey);
+	generate.genTransaction(hash, pubkey, privkey, nodeList);
 
 	// Get out of here
-	res.send(ans);
+	return res.send(ans);
 });
 
 

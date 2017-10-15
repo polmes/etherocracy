@@ -7,7 +7,7 @@ class Transaction {
 		this.pubkey=pubkey;
 	}
 	sign(privkey){
-		let s = crypto.createSign("sha256");
+		let s = crypto.createSign("RSA-SHA256"); // sha256
 		s.update(this.DNIhash);
 		return s.sign(privkey, "hex");
 	}

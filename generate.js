@@ -16,7 +16,7 @@ function genBlock(blockchain, pendingTrans, nodeList) {
 	});
 }
 
-function genTransaction(hash, pubkey, privkey) {
+function genTransaction(hash, pubkey, privkey, nodeList) {
 	// Create new transaction
 	trans = new Transaction(hash, pubkey, privkey);
 
