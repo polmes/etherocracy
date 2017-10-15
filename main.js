@@ -11,6 +11,7 @@ var generate = require('./generate');
 var blockchain = [new Block(0,0,0,"123987456")];
 var nodeList = [];
 var pendingTrans = [];
+var submittedTrans = [];
 var app = express();
 var db = new DataBase("census.json");
 
@@ -22,6 +23,14 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 // Polling station
 var pubkey = "";
 var privkey = "";
+
+app.get("/", (req, res) => {
+	res.sendFile(__dirname+"/index.html");
+});
+
+app.get("/style.css", (req, res) => {
+	res.sendFile(__dirname+"/style.css");
+});
 
 app.post("/check", (req, res) => {
 	let ans = {census: "unknown", block: "unknown"};
@@ -50,6 +59,7 @@ app.post("/check", (req, res) => {
 	res.send(ans);
 });
 
+
 app.post("/waitConsensus", (req, res) => {
 	//Wait for consensus in block history
 	if(false/*not consensus*/){
@@ -70,12 +80,23 @@ app.post("/getTrans", (req, res) => {
 	}
 });
 
+function checkChainCoherence(chain){
+	for(let i=1;i<chain.length;++i){
+		if(chain[i-1].hash!=chain[i].prevHash){
+			return false;
+		}
+	}
+	return true;
+}
+
 app.post("/getBlock", (req, res) => {
 	//Receive block from peers
-	if(blockchain[req.body.block.id-1].hash!=req.body.block.prevHash){
-		res.send("Error");
+	if(blockchain[req.body.block.id-1].id>=req.body.block.id){
+		res.send("Ignore");
 	} else if(req.body.block.id<=blockchain[blockchain.length-1].id){
 		//Forked!
+
+		newchain=requestBlockchain(ip,port);
 	} else {
 		blockchain.push(req.body.block);
 	}
