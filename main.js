@@ -29,6 +29,9 @@ var privkey = fs.readFileSync('testkey', 'utf8');
 
 // Arrays
 pubkeys = JSON.parse(fs.readFileSync('pubkeys.json', 'utf8'));
+for(let h=0;h<pubkeys.length;++h){
+	pubkeys[h]=pubkeys[h].trim();
+}
 nodeList = JSON.parse(fs.readFileSync('nodes.json', 'utf8'));
 
 app.get("/", (req, res) => {
@@ -102,7 +105,8 @@ app.post("/getTrans", (req, res) => {
 
 	//Check pubkey
 	console.log(pubkeys);
-	if (pubkeys.indexOf(trans.pubkey) < 0 ) {
+	console.log(trans.pubkey);
+	if (pubkeys.indexOf(trans.pubkey.trim()) < 0 ) {
 		return res.send("Error");
 	}
 
