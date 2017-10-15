@@ -1,3 +1,9 @@
+# Custom
+testkey
+testkey.pub
+pubkeys.json
+nodes.json
+
 # Logs
 logs
 *.log

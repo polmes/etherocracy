@@ -7,9 +7,7 @@ var Block = require('./block');
 var util = require('./util');
 var DataBase = require('./database');
 var generate = require('./generate');
-
 var events = require('./events');
-
 
 // Init
 var blockchain = [new Block(0,0,0,[])];
@@ -19,6 +17,7 @@ var submittedTrans = [];
 var pubkeys = [];
 var app = express();
 var db = new DataBase("census.json");
+
 // Config
 var http_port = 31416;
 app.use(bodyParser.json()); // support json encoded bodies
@@ -27,7 +26,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 // Polling station
 var pubkey = fs.readFileSync('testkey.pub', 'utf8');
 var privkey = fs.readFileSync('testkey', 'utf8');
-pubkeys.push(pubkey);
+
+// Arrays
+pubkeys = JSON.parse(fs.readFileSync('pubkeys.json', 'utf8'));
+nodeList = JSON.parse(fs.readFileSync('nodes.json', 'utf8'));
 
 app.get("/", (req, res) => {
 	res.sendFile(__dirname+"/index.html");
