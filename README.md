@@ -19,8 +19,13 @@ The code provided can be applied in several situations, such as:
 
 ## Built With
 
-* [AAA] - AAAA
-* [BBB] - BBBB
+* Node.js
+* JavaScript
+* JSON
+* Blockchain
+* HTML5
+* CSS3
+* AJAX
 
 ## License
 
