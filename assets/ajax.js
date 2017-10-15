@@ -6,17 +6,17 @@ function checkID() {
 	req.onload = () => {
 		if (req.readyState === req.DONE) {
 			if (req.status === 200) {
-				console.log(req.response);
+				let ans = JSON.parse(req.response);
 
-				if (req.response.census === "error") {
+				if (ans.census === "error") {
 					document.getElementById("registered").style.color = "red";
-				} else if (req.response.census == "success") {
+				} else if (ans.census == "success") {
 					document.getElementById("registered").style.color = "green";
 				}
 
-				if (req.response.block === "error") {
+				if (ans.block === "error") {
 					document.getElementById("eligibility").style.color = "red";
-				} else if (req.response.block == "success") {
+				} else if (ans.block == "success") {
 					document.getElementById("eligibility").style.color = "green";
 				}
 
@@ -35,4 +35,9 @@ function checkID() {
 			}
 		}
 	};
+}
+
+function resetStatus() {
+	document.getElementById("registered").style.color = "#aaa";
+	document.getElementById("eligibility").style.color = "#aaa";
 }
