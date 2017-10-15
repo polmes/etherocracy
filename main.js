@@ -14,6 +14,7 @@ var blockchain = [new Block(0,0,0,[])];
 var nodeList = [];
 var pendingTrans = [];
 var submittedTrans = [];
+var pubkeys = [];
 var app = express();
 var db = new DataBase("census.json");
 
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 // Polling station
 var pubkey = fs.readFileSync('testkey.pub', 'utf8');
 var privkey = fs.readFileSync('testkey', 'utf8');
+pubkeys.push(pubkey);
 
 app.get("/", (req, res) => {
 	res.sendFile(__dirname+"/index.html");
@@ -42,6 +44,14 @@ app.post("/check", (req, res) => {
 		return res.send(ans);
 	}
 	ans.census = "success";
+
+	//Check pendingTransactions
+	for (let i = 0; i < pendingTrans.length; i++) {
+		if (pendingTrans[i].DNIhash == hash) {
+			ans.block = "error";
+			return res.send(ans);
+		}
+	}
 
 	//Check if transaction is included in any previous blocks
 	for (let i = 0; i < blockchain.length; i++) {
@@ -71,12 +81,18 @@ app.post("/waitConsensus", (req, res) => {
 
 app.post("/getTrans", (req, res) => {
 	//Receive transaction from peers
+
+	//Check pubkey
+	if (pubkeys.indexOf(req.body.trans.pubkey) < 0 ) {
+		return res.send("Error");
+	}
+
 	//Check signature
 	if(!req.body.trans.verify()){
-		res.send("Error");
+		return res.send("Error");
 	} else {
 		pendingTrans.push(req.body.trans);
-		res.send("Success");
+		return res.send("Success");
 	}
 });
 
@@ -92,28 +108,34 @@ function checkChainCoherence(chain){
 app.post("/getBlock", (req, res) => {
 	//Receive block from peers
 	if(blockchain[blockchain.length-1].index>=req.body.block.index){
-		res.send("Ignore");
+		return res.send("Ignore");
 	} else if(blockchain[blockchain.length-1].index+1<req.body.block.index) {
 		let ip = req.connection.remoteAddress;
 		newchain=requestBlockchain(ip+":"+http_port);
 		if(!checkChainCoherence(newchain)){
-			res.send("Error");
+			return res.send("Error");
 		} else {
 			blockchain=newchain;
+			// Clear current transactions
+			blockchain.forEach((block) => {
+				block.data.forEach((trans) => {
+					let ind  = pendingTrans.indexOf(trans);
+					if (ind >= 0) pendingTrans.splice(ind, 1);
+				});
+			});
 		}
 	} else {
 		if(blockchain[blockchain.length-1].hash!=req.body.block.prevHash){
-			res.send("Error");
+			return res.send("Error");
 		} else {
 			blockchain.push(req.body.block);
+			// Clear current transactions
+			req.body.block.data.forEach((trans) => {
+				let ind  = pendingTrans.indexOf(trans);
+				if (ind >= 0) pendingTrans.splice(ind, 1);
+			});
 		}
 	}
-
-	// Clear current transactions
-	block.data.forEach((trans) => {
-		let ind  = pendingTrans.indexOf(trans);
-		if (ind >= 0) pendingTrans.splice(ind, 1);
-	});
 });
 
 app.post("/getBlockchain", (req, res) => {
