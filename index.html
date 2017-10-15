@@ -2,23 +2,23 @@
 <html>
 
 <head>
-	<title> Electoral roll eligibility web</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
-	<link rel="stylesheet" type="text/css" href="style.css">
-
+	<title>ETHEROCRACY</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+	<link href="style.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+	<script src="ajax.js"></script>
 </head>
 
 <body>
-	<h1 align="center"> ID for Electoral Roll </h1>
+	<h1 class="centered">Polling Station Registration</h1>
 
 	<div class="general">
 		<br>
-		<h3> Insert your full ID</h3>
+		<h3>Insert ID number</h3>
 
 		<form>
-			<input type="text" placeholder="12345678A" name="ID">
-				<button type="button" class="check" onclick="loadXMLDoc()">Check</button>
-
+			<input id="ID" type="text" placeholder="12345678A" name="ID">
+			<button type="button" class="check" onclick="checkID()">Check</button>
 			<input type="reset" value="Reset">
 		</form>
 
@@ -32,58 +32,12 @@
 	  		<br><br><br>
 	 		<span id="block_built" class="status">&#11044;</span>Block built
 		</div>
-
 		<br>
-		<h3> Connect </h3>
 
+		<!-- <h3>Connect</h3>
 		<textarea rows="5" placeholder="Connection details"></textarea>
 		<br>
-		<button type="button" onclick="alert('Nein');">Connect</button>
-
-		<script>
-			function loadXMLDoc(){
-				//console.log("IN");
-				var req=new XMLHttpRequest();
-		    	req.open('GET','file://...',true);
-				req.onreadystatechange = function() {
-		    		if (req.status==200){
-			    		
-			    		/*if( existeix hash){
-							document.getElementById("registered").style.color="green";
-						} else {
-							document.getElementById("registered").style.color="red";
-			        	} 
-						
-						if( ha votat){
-							document.getElementById("eligibility").style.color="red";
-						} else {
-							document.getElementById("eligibility").style.color="green";
-			        	}
-						
-						if(transmission_status){
-							document.getElementById("transmission").style.color="green";
-						} else {
-							document.getElementById("transmission").style.color="red";
-							console.log("An error ocurred while transmitting!");
-			        	}
-
-			        	if(block_built){
-							document.getElementById("block_built").style.color="green";
-						} else {
-							document.getElementById("block_built").style.color="red";
-			        	}
-						*/
-			   		} else {
-		    		
-		    		console.log("Error loading page\n");
-		    		}
-				}
-
-	    	req.send();
-			}
-		</script>
-		
+		<button type="button" onclick="alert('Nein');">Connect</button>		 -->
 	</div>
-	
 </body>
 </html>
