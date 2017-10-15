@@ -18,24 +18,35 @@ var http_port = 31416;
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-app.post("/checkCensus", (req, res) => {
-	//Check census
-	if(!db.isInCensus(util.sha256(req.body.dni))){
-		res.send("Error");
-	} else {
-		res.send("Success");
-	}
-});
+// Polling station
+var pubkey = "";
+var privkey = "";
 
-app.post("/checkTransInBlocks", (req, res) => {
+app.post("/check", (req, res) => {
+	let ans = {census: "unknown", block: "unknown"};
+	let hash = util.sha256(req.body.dni);
+
+	//Check census
+	if(!db.isInCensus(hash)){
+		ans.census = "error";
+		res.send(ans);
+	}
+	ans.census = "success";
+
 	//Check if transaction is included in any previous blocks
-	let ret="Success";
 	blockChain.forEach( (block) => {
 		if(block.includedTransaction(req.body))	{
-			ret="Error";
+			ans.block = "error";
+			res.send(ans);
 		}
 	});
-	res.send(ret);
+	ans.block = "success";
+
+	// Generate and send transaction
+	genTransaction(hash, pubkey, privkey);
+
+	// Get out of here
+	res.send(ans);
 });
 
 app.post("/waitConsensus", (req, res) => {
@@ -68,5 +79,9 @@ app.post("/getBlock", (req, res) => {
 		blockchain.push(req.body.block);
 	}
 });
+
+setInterval(() => {
+
+}, 10000);
 
 app.listen(http_port, () => console.log("Listening http on port: " + http_port)); // add '0.0.0.0' if necessary

@@ -1,7 +1,7 @@
 class Transaction {
-	constructor(DNIhash,sig,pubkey,privkey){
+	constructor(DNIhash,pubkey,privkey){
 		this.DNIhash=DNIhash;
-		this.sig=sign(privkey);
+		this.sig=this.sign(privkey);
 		this.pubkey=pubkey;
 	}
 	sign(privkey){
