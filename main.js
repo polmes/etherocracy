@@ -81,6 +81,11 @@ app.post("/getBlock", (req, res) => {
 	}
 });
 
+app.post("/getBlockchain", (req, res) => {
+	//Send blockchain to peers upon request
+	res.send(blockchain);
+});
+
 setInterval(() => {
 	generate.genBlock(blockchain, pendingTrans, nodeList);
 }, 10000);
