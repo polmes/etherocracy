@@ -7,6 +7,7 @@ function checkID() {
 		if (req.readyState === req.DONE) {
 			if (req.status === 200) {
 				let ans = JSON.parse(req.response);
+				console.log(ans);
 
 				if (ans.census === "error") {
 					document.getElementById("registered").style.color = "red";

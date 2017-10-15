@@ -16,9 +16,12 @@ function genBlock(blockchain, pendingTrans, nodeList) {
 	});
 }
 
-function genTransaction(hash, pubkey, privkey, nodeList) {
+function genTransaction(hash, pubkey, privkey, pendingTrans, nodeList) {
 	// Create new transaction
 	trans = new Transaction(hash, pubkey, privkey);
+
+	// Add to current 'pending' transactions
+	pendingTrans.push(trans);
 
 	// Propagate
 	nodeList.forEach((node) => {

@@ -11,8 +11,14 @@ class Block {
 	calculateHash() {
 	    return util.sha256(this.index + this.previousHash + this.timestamp + this.data);
 	}
-	includedTransaction(trans){
-		return this.data.indexOf(trans)<0 ? false : true;
+	includedTransaction(hash) {
+		let found = false;
+		for (let i = 0; i < this.data.length && !found; i++) {
+			if (this.data[i].DNIhash == hash) {
+				found = true;
+			}
+		}
+		return found ? true : false;
 	}
 }
 

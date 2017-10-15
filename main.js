@@ -10,7 +10,7 @@ var generate = require('./generate');
 
 
 // Init
-var blockchain = [new Block(0,0,0,"123987456")];
+var blockchain = [new Block(0,0,0,[])];
 var nodeList = [];
 var pendingTrans = [];
 var submittedTrans = [];
@@ -44,16 +44,18 @@ app.post("/check", (req, res) => {
 	ans.census = "success";
 
 	//Check if transaction is included in any previous blocks
-	blockchain.forEach( (block) => {
-		if(block.includedTransaction(req.body))	{
+	// let found = false;
+	for (let i = 0; i < blockchain.length; i++) {
+		if (blockchain[i].includedTransaction(hash)) {
 			ans.block = "error";
 			return res.send(ans);
 		}
-	});
+	}
+		
 	ans.block = "success";
 
 	// Generate and send transaction
-	generate.genTransaction(hash, pubkey, privkey, nodeList);
+	generate.genTransaction(hash, pubkey, privkey, pendingTrans,  nodeList);
 
 	// Get out of here
 	return res.send(ans);

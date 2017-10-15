@@ -15,7 +15,7 @@ class Transaction {
 		if(nodeList.indexOf(this.pubkey)<0){
 			return false;
 		}
-		let s=crypto.createVerify("sha256");
+		let s=crypto.createVerify("RSA-SHA256"); // sha256
 		s.update(this.sig);
 		return s.verify(this.pubkey,this.sig);
 	}
