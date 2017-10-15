@@ -14,13 +14,16 @@ function genBlock(blockchain, pendingTrans, nodeList) {
 	nodeList.forEach((node) => {
 		send.sendBlock(ip_port, block);
 	});
+
+	// Clear current transactions
+	pendingTrans = [];
 }
 
 function genTransaction(hash, pubkey, privkey, pendingTrans, nodeList) {
 	// Create new transaction
 	trans = new Transaction(hash, pubkey, privkey);
 
-	// Add to current 'pending' transactions
+	// Add to current transactions
 	pendingTrans.push(trans);
 
 	// Propagate

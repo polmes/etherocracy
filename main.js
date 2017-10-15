@@ -44,14 +44,12 @@ app.post("/check", (req, res) => {
 	ans.census = "success";
 
 	//Check if transaction is included in any previous blocks
-	// let found = false;
 	for (let i = 0; i < blockchain.length; i++) {
 		if (blockchain[i].includedTransaction(hash)) {
 			ans.block = "error";
 			return res.send(ans);
 		}
 	}
-		
 	ans.block = "success";
 
 	// Generate and send transaction
@@ -93,9 +91,9 @@ function checkChainCoherence(chain){
 
 app.post("/getBlock", (req, res) => {
 	//Receive block from peers
-	if(blockchain[blockchain.length-1].id>=req.body.block.id){
+	if(blockchain[blockchain.length-1].index>=req.body.block.index){
 		res.send("Ignore");
-	} else if(blockchain[blockchain.length-1].id+1<req.body.block.id) {
+	} else if(blockchain[blockchain.length-1].index+1<req.body.block.index) {
 		let ip = req.connection.remoteAddress;
 		newchain=requestBlockchain(ip+":"+http_port);
 		if(!checkChainCoherence(newchain)){
@@ -110,6 +108,12 @@ app.post("/getBlock", (req, res) => {
 			blockchain.push(req.body.block);
 		}
 	}
+
+	// Clear current transactions
+	block.data.forEach((trans) => {
+		let ind  = pendingTrans.indexOf(trans);
+		if (ind >= 0) pendingTrans.splice(ind, 1);
+	});
 });
 
 app.post("/getBlockchain", (req, res) => {
