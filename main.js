@@ -86,7 +86,7 @@ app.post("/waitConsensus", (req, res) => {
 				}
 			}
 		}
-	}
+	});
 });
 
 app.post("/getTrans", (req, res) => {
