@@ -23,7 +23,6 @@ class Transaction {
 			return false;
 		}
 		let s=crypto.createVerify("RSA-SHA256"); // sha256
-		s.update(this.sig);
 		return s.verify(this.pubkey.trim(),this.sig);
 	}
 }
