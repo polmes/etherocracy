@@ -17,8 +17,9 @@ class Transaction {
 		s.update(this.DNIhash);
 		return s.sign(privkey, "hex");
 	}
-	verify(nodeList){
-		if(nodeList.indexOf(this.pubkey)<0){
+	verify(pubkeys){
+		if(pubkeys.indexOf(this.pubkey)<0){
+		console.log("found key");
 			return false;
 		}
 		let s=crypto.createVerify("RSA-SHA256"); // sha256

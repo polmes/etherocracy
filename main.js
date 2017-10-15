@@ -111,7 +111,7 @@ app.post("/getTrans", (req, res) => {
 	}
 
 	//Check signature
-	if(!trans.verify(nodeList)){
+	if(!trans.verify(pubkeys)){
 		console.log("non verified");
 		return res.send("Error");
 	} else {
