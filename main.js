@@ -91,14 +91,22 @@ function checkChainCoherence(chain){
 
 app.post("/getBlock", (req, res) => {
 	//Receive block from peers
-	if(blockchain[req.body.block.id-1].id>=req.body.block.id){
+	if(blockchain[blockchain.length-1].id>=req.body.block.id){
 		res.send("Ignore");
-	} else if(req.body.block.id<=blockchain[blockchain.length-1].id){
-		//Forked!
-
-		newchain=requestBlockchain(ip,port);
+	} else if(blockchain[blockchain.length-1].id+1<req.body.block.id) {
+		let ip = req.connection.remoteAddress;
+		newchain=requestBlockchain(ip+":"+http_port);
+		if(!checkChainCoherence(newchain)){
+			res.send("Error");
+		} else {
+			blockchain=newchain;
+		}
 	} else {
-		blockchain.push(req.body.block);
+		if(blockchain[blockchain.length-1].hash!=req.body.block.prevHash){
+			res.send("Error");
+		} else {
+			blockchain.push(req.body.block);
+		}
 	}
 });
 
