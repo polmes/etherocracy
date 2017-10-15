@@ -74,19 +74,22 @@ app.post("/check", (req, res) => {
 app.post("/waitConsensus", (req, res) => {
 	//Wait for consensus in block history
 	let hash = util.sha256(req.body.dni);
-	events.blockEmitter.on('newBlock',() => {
+	let func = () => {
 		for(let i=blockchain.length-2;i>=0;--i){
 			for( let j=0; j<blockchain[i].data.length;++j){
 				if(blockchain[i].data[j].DNIhash==hash){
 					if(blockchain[i].data[j].pubkey==pubkey){
+						events.blockEmitter.removeListener('newBlock',func);
 						return res.send("Success");
 					} else {
+						events.blockEmitter.removeListener('newBlock',func);
 						return res.send("Error");
 					}
 				}
 			}
 		}
-	});
+	};
+	events.blockEmitter.on('newBlock',func);
 });
 
 app.post("/getTrans", (req, res) => {
