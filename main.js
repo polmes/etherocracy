@@ -7,7 +7,7 @@ var util = require('./util');
 var DataBase = require('./database');
 
 // Init
-var blockchain = [];
+var blockchain = [new Block(0,0,0,"123987456")];
 var nodeList = [];
 var pendingTrans = [];
 var app = express();
@@ -60,8 +60,10 @@ app.post("/getTrans", (req, res) => {
 
 app.post("/getBlock", (req, res) => {
 	//Receive block from peers
-	if(false/*wrong hash signature*/){
+	if(blockchain[req.body.block.id-1].hash!=req.body.block.prevHash){
 		res.send("Error");
+	} else if(req.body.block.id<=blockchain[blockchain.length-1].id){
+		//Forked!
 	} else {
 		blockchain.push(req.body.block);
 	}
