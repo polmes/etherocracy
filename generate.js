@@ -3,7 +3,7 @@ var send = require('./send');
 
 function genBlock(blockchain, pendingTrans, nodeList) {
 	// Create new block
-	prev = blockchain[blockChain.length - 1];
+	prev = blockchain[blockchain.length - 1];
 	let block = new Block(prev.index + 1, prev.hash, Date.now(), pendingTrans);
 
 	// Add to current blockchain
