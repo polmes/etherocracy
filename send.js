@@ -1,6 +1,7 @@
 var request = require('request');
 
 var sendBlock = function(ip_port, block) {
+	console.log("send");
 	request({
 		uri: "http://" + ip_port + "/getBlock",
 		method: "POST",
@@ -11,6 +12,7 @@ var sendBlock = function(ip_port, block) {
 };
 
 var sendTrans = function(ip_port, trans) {
+	console.log("trans");
 	request({
 		uri: "http://" + ip_port + "/getTrans",
 		method: "POST",

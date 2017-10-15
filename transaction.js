@@ -1,10 +1,16 @@
 var crypto = require('crypto');
 
 class Transaction {
-	constructor(DNIhash,pubkey,privkey){
-		this.DNIhash=DNIhash;
-		this.sig=this.sign(privkey);
-		this.pubkey=pubkey;
+	constructor(DNIhash,pubkey,privkey,boole){
+		if(boole) {
+			this.DNIhash=DNIhash;
+			this.sig=this.sign(privkey);
+			this.pubkey=pubkey;
+		} else {
+			this.DNIhash = DNIhash;
+			this.pubkey = pubkey;
+			this.sig = privkey;
+		}
 	}
 	sign(privkey){
 		let s = crypto.createSign("RSA-SHA256"); // sha256

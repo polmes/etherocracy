@@ -95,9 +95,13 @@ app.post("/waitConsensus", (req, res) => {
 });
 
 app.post("/getTrans", (req, res) => {
+	console.log("getTrans");
+	console.log(req.body);
 	//Receive transaction from peers
+	let trans = new Transaction(req.body.trans.DNIhash, req.body.trans.pubkey, req.body.trans.sig, false);
 
 	//Check pubkey
+	console.log(pubkeys);
 	if (pubkeys.indexOf(req.body.trans.pubkey) < 0 ) {
 		return res.send("Error");
 	}
@@ -106,6 +110,7 @@ app.post("/getTrans", (req, res) => {
 	if(!req.body.trans.verify()){
 		return res.send("Error");
 	} else {
+		console.log("add to pending");
 		pendingTrans.push(req.body.trans);
 		return res.send("Success");
 	}
@@ -121,6 +126,8 @@ function checkChainCoherence(chain){
 }
 
 app.post("/getBlock", (req, res) => {
+	console.log("getBlock");
+	console.log(req.body);
 	//Receive block from peers
 	if(blockchain[blockchain.length-1].index>=req.body.block.index){
 		return res.send("Ignore");

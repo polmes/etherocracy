@@ -23,7 +23,7 @@ function genBlock(blockchain, pendingTrans, nodeList) {
 
 function genTransaction(hash, pubkey, privkey, pendingTrans, nodeList) {
 	// Create new transaction
-	trans = new Transaction(hash, pubkey, privkey);
+	trans = new Transaction(hash, pubkey, privkey, true);
 
 	// Add to current transactions
 	pendingTrans.push(trans);
