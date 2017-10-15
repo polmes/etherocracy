@@ -1,7 +1,6 @@
 var util=require("./util");
 
 class Block {
-	
 	constructor(index, previousHash, timestamp, data) {
 		this.index = index;
 		this.previousHash = previousHash.toString();

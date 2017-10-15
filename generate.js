@@ -1,6 +1,7 @@
 var Block = require('./block');
 var Transaction = require('./transaction')
 var send = require('./send');
+var events = require('./events');
 
 function genBlock(blockchain, pendingTrans, nodeList) {
 	// Create new block
@@ -9,6 +10,7 @@ function genBlock(blockchain, pendingTrans, nodeList) {
 
 	// Add to current blockchain
 	blockchain.push(block);
+	events.blockEmitter.emit('newBlock');
 
 	// Propagate
 	nodeList.forEach((node) => {
