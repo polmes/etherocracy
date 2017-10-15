@@ -108,6 +108,7 @@ app.post("/getTrans", (req, res) => {
 
 	//Check signature
 	if(!req.body.trans.verify()){
+		console.log("non verified");
 		return res.send("Error");
 	} else {
 		console.log("add to pending");
@@ -129,6 +130,7 @@ app.post("/getBlock", (req, res) => {
 	console.log("getBlock");
 	console.log(req.body);
 	//Receive block from peers
+	console.log(req.body);
 	if(blockchain[blockchain.length-1].index>=req.body.block.index){
 		return res.send("Ignore");
 	} else if(blockchain[blockchain.length-1].index+1<req.body.block.index) {
