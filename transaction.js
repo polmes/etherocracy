@@ -1,3 +1,5 @@
+var crypto = require('crypto');
+
 class Transaction {
 	constructor(DNIhash,pubkey,privkey){
 		this.DNIhash=DNIhash;

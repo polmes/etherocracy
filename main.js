@@ -28,9 +28,7 @@ app.get("/", (req, res) => {
 	res.sendFile(__dirname+"/index.html");
 });
 
-app.get("/style.css", (req, res) => {
-	res.sendFile(__dirname+"/style.css");
-});
+app.use(express.static('assets'));
 
 app.post("/check", (req, res) => {
 	let ans = {census: "unknown", block: "unknown"};
@@ -44,7 +42,7 @@ app.post("/check", (req, res) => {
 	ans.census = "success";
 
 	//Check if transaction is included in any previous blocks
-	blockChain.forEach( (block) => {
+	blockchain.forEach( (block) => {
 		if(block.includedTransaction(req.body))	{
 			ans.block = "error";
 			res.send(ans);

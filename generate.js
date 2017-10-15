@@ -1,4 +1,5 @@
 var Block = require('./block');
+var Transaction = require('./transaction')
 var send = require('./send');
 
 function genBlock(blockchain, pendingTrans, nodeList) {

@@ -20,5 +20,13 @@ var sendTrans = function(ip_port, trans) {
 	});
 };
 
+var requestBlockchain = function(ip_port) {
+	request({
+		uri: "http://" + ip_port + "/getBlockchain",
+		method: "POST"
+	});
+};
+
 module.exports.sendBlock = sendBlock;
 module.exports.sendTrans = sendTrans;
+module.exports.requestBlockchain = requestBlockchain;
