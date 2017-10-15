@@ -107,7 +107,7 @@ app.post("/getTrans", (req, res) => {
 	}
 
 	//Check signature
-	if(!trans.verify()){
+	if(!trans.verify(nodeList)){
 		console.log("non verified");
 		return res.send("Error");
 	} else {

@@ -17,7 +17,7 @@ class Transaction {
 		s.update(this.DNIhash);
 		return s.sign(privkey, "hex");
 	}
-	verify(){
+	verify(nodeList){
 		if(nodeList.indexOf(this.pubkey)<0){
 			return false;
 		}
