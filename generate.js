@@ -24,3 +24,6 @@ function genTransaction(hash, pubkey, privkey) {
 		send.sendTrans(ip_port, trans);
 	});
 }
+
+module.exports.genBlock = genBlock;
+module.exports.genTransaction = genTransaction;

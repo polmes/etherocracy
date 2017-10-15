@@ -5,6 +5,7 @@ var Transaction = require('./transaction');
 var Block = require('./block');
 var util = require('./util');
 var DataBase = require('./database');
+var generate = require('./generate');
 
 // Init
 var blockchain = [new Block(0,0,0,"123987456")];
@@ -43,7 +44,7 @@ app.post("/check", (req, res) => {
 	ans.block = "success";
 
 	// Generate and send transaction
-	genTransaction(hash, pubkey, privkey);
+	generate.genTransaction(hash, pubkey, privkey);
 
 	// Get out of here
 	res.send(ans);
@@ -81,7 +82,7 @@ app.post("/getBlock", (req, res) => {
 });
 
 setInterval(() => {
-
+	generate.genBlock(blockchain, pendingTrans, nodeList);
 }, 10000);
 
 app.listen(http_port, () => console.log("Listening http on port: " + http_port)); // add '0.0.0.0' if necessary
