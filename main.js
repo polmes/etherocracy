@@ -8,6 +8,8 @@ var util = require('./util');
 var DataBase = require('./database');
 var generate = require('./generate');
 
+var events = require('./events');
+
 
 // Init
 var blockchain = [new Block(0,0,0,[])];
@@ -17,7 +19,6 @@ var submittedTrans = [];
 var pubkeys = [];
 var app = express();
 var db = new DataBase("census.json");
-
 // Config
 var http_port = 31416;
 app.use(bodyParser.json()); // support json encoded bodies
@@ -72,10 +73,19 @@ app.post("/check", (req, res) => {
 
 app.post("/waitConsensus", (req, res) => {
 	//Wait for consensus in block history
-	if(false/*not consensus*/){
-		res.send("Error");
-	} else {
-		res.send("Success");
+	let hash = util.sha256(req.body.dni);
+	events.blockEmitter.on('newBlock',() => {
+		for(let i=blockchain.length-2;i>=0;--i){
+			for( let j=0; j<blockchain[i].data.length;++j){
+				if(blockchain[i].data[j].DNIhash==hash){
+					if(blockchain[i].data[j].pubkey==pubkey){
+						return res.send("Success");
+					} else {
+						return res.send("Error");
+					}
+				}
+			}
+		}
 	}
 });
 
@@ -116,6 +126,7 @@ app.post("/getBlock", (req, res) => {
 			return res.send("Error");
 		} else {
 			blockchain=newchain;
+			events.blockEmitter.emit("newBlock");
 			// Clear current transactions
 			blockchain.forEach((block) => {
 				block.data.forEach((trans) => {
