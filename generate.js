@@ -14,7 +14,7 @@ function genBlock(blockchain, pendingTrans, nodeList) {
 
 	// Propagate
 	nodeList.forEach((node) => {
-		send.sendBlock(ip_port, block);
+		send.sendBlock(node, block);
 	});
 
 	// Clear current transactions
@@ -30,7 +30,7 @@ function genTransaction(hash, pubkey, privkey, pendingTrans, nodeList) {
 
 	// Propagate
 	nodeList.forEach((node) => {
-		send.sendTrans(ip_port, trans);
+		send.sendTrans(node, trans);
 	});
 }
 
